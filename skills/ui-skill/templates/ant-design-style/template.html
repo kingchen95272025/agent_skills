@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>采购订单管理 - Ant Design风格模板</title>
+    <style>
+        /* Ant Design B端供应链系统样式 */
+
+        /* 基础重置样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            font-size: 14px;
+            background: #f0f2f5;
+            color: #000000d9;
+            line-height: 1.5715;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Ant Design面包屑导航样式 */
+        .at-breadcrumb {
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .at-breadcrumb-item {
+            display: inline-block;
+            color: #00000073;
+        }
+
+        .at-breadcrumb-item::after {
+            content: "/";
+            margin: 0 8px;
+            color: #00000040;
+        }
+
+        .at-breadcrumb-item:last-child::after {
+            display: none;
+        }
+
+        .at-breadcrumb-item:last-child {
+            color: #000000d9;
+        }
+
+        /* 统计卡片 */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 2px;
+            border: 1px solid #f0f0f0;
+            transition: box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000012;
+        }
+
+        .stat-title {
+            color: #00000073;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: 600;
+            color: #000000d9;
+            margin-bottom: 4px;
+            line-height: 38px;
+        }
+
+        .stat-desc {
+            color: #00000073;
+            font-size: 14px;
+        }
+
+        /* 筛选区域样式 */
+        .table-filter {
+            background: white;
+            padding: 24px;
+            border-radius: 2px;
+            margin-bottom: 16px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .search-form {
+            margin-bottom: 16px;
+        }
+
+        .form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Ant Design输入组件样式 */
+        .at-input-group {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .at-input-group__prepend {
+            background: #fafafa;
+            border: 1px solid #d9d9d9;
+            border-right: none;
+            padding: 4px 11px;
+            font-size: 14px;
+            color: #000000d9;
+            border-radius: 2px 0 0 2px;
+            white-space: nowrap;
+        }
+
+        .at-input-group input,
+        .at-input-group select {
+            border: 1px solid #d9d9d9;
+            border-radius: 0 2px 2px 0;
+            padding: 4px 11px;
+            font-size: 14px;
+            width: 150px;
+            outline: none;
+            background: white;
+            transition: all 0.3s;
+            color: #000000d9;
+        }
+
+        .at-input-group input:not(.at-input-group__prepend + input) {
+            border-radius: 2px;
+            border: 1px solid #d9d9d9;
+        }
+
+        .at-input-group input:focus,
+        .at-input-group select:focus {
+            border-color: #40a9ff;
+            box-shadow: 0 0 0 2px #1890ff1a;
+        }
+
+        .at-input-group input:hover,
+        .at-input-group select:hover {
+            border-color: #40a9ff;
+        }
+
+        /* 按钮样式 */
+        .at-button {
+            padding: 4px 15px;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: white;
+            color: #000000d9;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 32px;
+            font-weight: 400;
+            line-height: 1.5715;
+        }
+
+        .at-button:hover {
+            color: #40a9ff;
+            border-color: #40a9ff;
+        }
+
+        .at-button:active {
+            color: #096dd9;
+            border-color: #096dd9;
+        }
+
+        .btn-main {
+            background: #1890ff;
+            color: white;
+            border-color: #1890ff;
+            text-shadow: 0 -1px 0 #0000001a;
+            box-shadow: 0 2px #0000000b;
+        }
+
+        .btn-main:hover {
+            background: #40a9ff;
+            border-color: #40a9ff;
+            color: white;
+        }
+
+        .btn-main:active {
+            background: #096dd9;
+            border-color: #096dd9;
+        }
+
+        .btn-search {
+            background: #1890ff;
+            color: white;
+            border-color: #1890ff;
+        }
+
+        .btn-search:hover {
+            background: #40a9ff;
+            border-color: #40a9ff;
+        }
+
+        .list-nav {
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .list-nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .list-nav li {
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* 表格样式 */
+        .table-box {
+            background: white;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .order-table th,
+        .order-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.3s;
+            vertical-align: middle;
+        }
+
+        .status-cell {
+            text-align: center;
+            padding: 16px 8px !important;
+            min-width: 100px;
+        }
+
+        .order-table th {
+            background: #fafafa;
+            color: #000000d9;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .order-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        .order-table tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .order-table .actions {
+            white-space: nowrap;
+        }
+
+        .order-table .actions button {
+            margin-right: 8px;
+            padding: 0px 7px;
+            font-size: 14px;
+            height: 24px;
+            min-height: 24px;
+        }
+
+        /* 状态标签样式 - Ant Design风格 */
+        .status-tag {
+            padding: 0 8px;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: normal;
+            display: inline-block;
+            line-height: 20px;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .status-draft {
+            background: #f6ffed;
+            border-color: #b7eb8f;
+            color: #52c41a;
+        }
+
+        .status-pending {
+            background: #fff7e6;
+            border-color: #ffd591;
+            color: #fa8c16;
+        }
+
+        .status-approved {
+            background: #f6ffed;
+            border-color: #b7eb8f;
+            color: #52c41a;
+        }
+
+        .status-rejected {
+            background: #fff1f0;
+            border-color: #ffccc7;
+            color: #ff4d4f;
+        }
+
+        .status-returned {
+            background: #fff7e6;
+            border-color: #ffd591;
+            color: #fa8c16;
+        }
+
+        .status-processing {
+            background: #f9f0ff;
+            border-color: #d3adf7;
+            color: #722ed1;
+        }
+
+        .status-completed {
+            background: #f6ffed;
+            border-color: #b7eb8f;
+            color: #52c41a;
+        }
+
+        .status-cancelled {
+            background: #fff1f0;
+            border-color: #ffccc7;
+            color: #ff4d4f;
+        }
+
+        .status-tag::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .status-draft::before { background: #52c41a; }
+        .status-pending::before { background: #fa8c16; }
+        .status-approved::before { background: #52c41a; }
+        .status-rejected::before { background: #ff4d4f; }
+        .status-returned::before { background: #fa8c16; }
+        .status-processing::before { background: #722ed1; }
+        .status-completed::before { background: #52c41a; }
+        .status-cancelled::before { background: #ff4d4f; }
+
+        /* 优先级标签 */
+        .priority-high { color: #ff4d4f; font-weight: 500; }
+        .priority-medium { color: #fa8c16; font-weight: 400; }
+        .priority-low { color: #52c41a; font-weight: 400; }
+
+        /* 分页样式 */
+        .pagination {
+            padding: 16px 24px;
+            text-align: right;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .pagination span {
+            margin-right: 16px;
+            color: #000000d9;
+        }
+
+        .pagination button {
+            margin: 0 4px;
+            padding: 0 8px;
+            border: 1px solid #d9d9d9;
+            background: white;
+            color: #000000d9;
+            border-radius: 2px;
+            cursor: pointer;
+            min-width: 32px;
+            height: 32px;
+            line-height: 30px;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+
+        .pagination button.active {
+            background: #1890ff;
+            border-color: #1890ff;
+            color: white;
+        }
+
+        /* 模态框样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #00000073;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
+            z-index: 1001;
+        }
+
+        .modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #000000d9;
+            line-height: 22px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #00000073;
+            padding: 0;
+            width: 56px;
+            height: 56px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #00000073;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 10px 16px;
+            border-top: 1px solid #f0f0f0;
+            text-align: right;
+        }
+
+        .modal-footer button {
+            margin-left: 8px;
+        }
+
+        /* 表单样式 */
+        .at-input-group input,
+        .at-input-group select {
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            color: #000000d9;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #ff4d4f;
+        }
+
+        /* 表单垂直布局 */
+        .form-vertical .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-vertical label {
+            font-weight: normal;
+            color: #000000d9;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .form-vertical input[type="file"] {
+            border: 1px dashed #d9d9d9;
+            padding: 12px;
+            border-radius: 2px;
+            width: 100%;
+            background: #fafafa;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .form-vertical input[type="file"]:hover {
+            border-color: #1890ff;
+        }
+
+        .form-vertical a {
+            color: #1890ff;
+            text-decoration: none;
+            padding: 4px 8px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .form-vertical a:hover {
+            color: #40a9ff;
+        }
+
+        #import-result-group .form-group,
+        #import-fail-group .form-group {
+            padding: 12px;
+            border-radius: 2px;
+            border: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        /* 加载动画 */
+        .loading-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f0f0f0;
+            border-top: 2px solid #1890ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 页面加载动画 */
+        .page-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .form-inline {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-group {
+                margin-bottom: 8px;
+                width: 100%;
+            }
+
+            .at-input-group input,
+            .at-input-group select {
+                width: 100%;
+            }
+
+            .table-box {
+                overflow-x: auto;
+            }
+
+            .order-table {
+                min-width: 800px;
+            }
+
+            .modal {
+                margin: 16px;
+                width: calc(100% - 32px) !important;
+                max-width: none;
+            }
+
+            .modal-body {
+                padding: 16px;
+            }
+
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container page-fade-in">
+        <!-- AT-UI面包屑导航 -->
+        <div class="at-breadcrumb">
+            <span class="at-breadcrumb-item">供应链管理</span>
+            <span class="at-breadcrumb-item">采购管理</span>
+            <span class="at-breadcrumb-item">采购订单</span>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-title">待处理订单</div>
+                <div class="stat-value">12</div>
+                <div class="stat-desc">需要审批的订单</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">本月订单</div>
+                <div class="stat-value">45</div>
+                <div class="stat-desc">较上月 +12.5%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">订单总金额</div>
+                <div class="stat-value">¥2.8M</div>
+                <div class="stat-desc">累计采购金额</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">完成率</div>
+                <div class="stat-value">87%</div>
+                <div class="stat-desc">订单按时完成率</div>
+            </div>
+        </div>
+
+        <!-- 筛选和搜索区域 -->
+        <div class="table-filter">
+            <div class="search-form">
+                <form class="form-inline" onsubmit="searchList(); return false;">
+                    <!-- 订单编号搜索 -->
+                    <div class="form-group">
+                        <div class="at-input-group">
+                            <span class="at-input-group__prepend">订单编号:</span>
+                            <input type="text" placeholder="请输入订单编号" id="order_no">
+                        </div>
+                    </div>
+
+                    <!-- 供应商搜索 -->
+                    <div class="form-group">
+                        <div class="at-input-group">
+                            <span class="at-input-group__prepend">供应商:</span>
+                            <input type="text" placeholder="请输入供应商名称" id="supplier_name">
+                        </div>
+                    </div>
+
+                    <!-- 申请部门选择 -->
+                    <div class="form-group">
+                        <div class="at-input-group">
+                            <span class="at-input-group__prepend">申请部门:</span>
+                            <select id="department">
+                                <option value="">请选择部门</option>
+                                <option value="研发部">研发部</option>
+                                <option value="市场部">市场部</option>
+                                <option value="生产部">生产部</option>
+                                <option value="人事部">人事部</option>
+                                <option value="财务部">财务部</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 状态选择 -->
+                    <div class="form-group">
+                        <div class="at-input-group">
+                            <span class="at-input-group__prepend">订单状态:</span>
+                            <select id="status">
+                                <option value="">请选择状态</option>
+                                <option value="draft">草稿</option>
+                                <option value="pending">待审批</option>
+                                <option value="approved">审批通过</option>
+                                <option value="rejected">审批拒绝</option>
+                                <option value="returned">退回修改</option>
+                                <option value="processing">处理中</option>
+                                <option value="completed">已完成</option>
+                                <option value="cancelled">已取消</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 优先级选择 -->
+                    <div class="form-group">
+                        <div class="at-input-group">
+                            <span class="at-input-group__prepend">优先级:</span>
+                            <select id="priority">
+                                <option value="">请选择优先级</option>
+                                <option value="high">高</option>
+                                <option value="medium">中</option>
+                                <option value="low">低</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 搜索按钮 -->
+                    <div class="form-group">
+                        <button type="submit" class="at-button btn-search">搜索</button>
+                        <button type="button" class="at-button" onclick="clearSearch()">清除</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 操作按钮区域 -->
+            <div class="list-nav">
+                <ul>
+                    <li>
+                        <button class="at-button btn-main" onclick="showAddModal()">新建订单</button>
+                    </li>
+                    <li>
+                        <button class="at-button btn-main" onclick="showImportModal()">导入数据</button>
+                    </li>
+                    <li>
+                        <button class="at-button btn-main" onclick="batchApprove()">批量审批</button>
+                    </li>
+                    <li>
+                        <button class="at-button btn-main" onclick="exportOrders()">导出数据</button>
+                    </li>
+                    <li>
+                        <button class="at-button" onclick="batchDelete()">批量删除</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 采购订单表格区域 -->
+        <div id="order-table-container">
+            <div class="table-box">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th width="50">
+                                <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                            </th>
+                            <th width="120">订单编号</th>
+                            <th width="150">供应商名称</th>
+                            <th width="100">申请部门</th>
+                            <th width="80">申请人</th>
+                            <th width="100">申请日期</th>
+                            <th width="100">期望到货日期</th>
+                            <th width="100">订单金额</th>
+                            <th width="100">状态</th>
+                            <th width="80">优先级</th>
+                            <th width="160">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="order-tbody">
+                        <!-- 订单数据将通过JavaScript动态加载 -->
+                    </tbody>
+                </table>
+
+                <!-- 分页区域 -->
+                <div class="pagination">
+                    <span>共 <span id="total-count">0</span> 条</span>
+                    <button onclick="changePage(1)">首页</button>
+                    <button onclick="prevPage()">上一页</button>
+                    <button class="active" onclick="changePage(1)">1</button>
+                    <button onclick="changePage(2)">2</button>
+                    <button onclick="changePage(3)">3</button>
+                    <button onclick="nextPage()">下一页</button>
+                    <button onclick="changePage(-1)">末页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增/编辑订单模态框 -->
+    <div class="modal-overlay" id="order-modal-overlay">
+        <div class="modal" style="width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">新增采购订单</h3>
+                <button class="modal-close" onclick="closeModal('order-modal-overlay')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="order-form">
+                    <!-- 基本信息 -->
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="margin-bottom: 16px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">基本信息</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div>
+                                <label>订单编号 <span class="required">*</span></label>
+                                <div class="at-input-group">
+                                    <input type="text" id="form-order-no" placeholder="自动生成" readonly>
+                                </div>
+                            </div>
+                            <div>
+                                <label>供应商 <span class="required">*</span></label>
+                                <div class="at-input-group">
+                                    <select id="form-supplier" required>
+                                        <option value="">请选择供应商</option>
+                                        <option value="科技创新有限公司">科技创新有限公司</option>
+                                        <option value="硬件制造集团">硬件制造集团</option>
+                                        <option value="材料供应商">材料供应商</option>
+                                        <option value="服务提供商">服务提供商</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label>申请部门 <span class="required">*</span></label>
+                                <div class="at-input-group">
+                                    <input type="text" id="form-department" placeholder="请输入申请部门" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label>期望到货日期 <span class="required">*</span></label>
+                                <div class="at-input-group">
+                                    <input type="date" id="form-expected-date" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label>优先级</label>
+                                <div class="at-input-group">
+                                    <select id="form-priority">
+                                        <option value="low">低</option>
+                                        <option value="medium" selected>中</option>
+                                        <option value="high">高</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label>预算金额</label>
+                                <div class="at-input-group">
+                                    <input type="number" id="form-budget-amount" placeholder="0.00" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 订单明细 -->
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="margin-bottom: 16px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">
+                            订单明细
+                            <button type="button" class="at-button btn-main" style="float: right; padding: 4px 8px; font-size: 11px;" onclick="addOrderItem()">➕ 添加商品</button>
+                        </h4>
+                        <div style="border: 1px solid #DCDFE6; border-radius: 6px; padding: 16px;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #EBEEF5; font-size: 12px;">商品名称</th>
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #EBEEF5; font-size: 12px;">数量</th>
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #EBEEF5; font-size: 12px;">单价</th>
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #EBEEF5; font-size: 12px;">金额</th>
+                                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #EBEEF5; font-size: 12px;">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order-items">
+                                    <tr>
+                                        <td style="padding: 8px;">
+                                            <div class="at-input-group">
+                                                <input type="text" placeholder="商品名称" style="width: 200px;">
+                                            </div>
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <div class="at-input-group">
+                                                <input type="number" placeholder="数量" style="width: 100px;" onchange="calculateItemTotal(this)">
+                                            </div>
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <div class="at-input-group">
+                                                <input type="number" placeholder="单价" step="0.01" style="width: 120px;" onchange="calculateItemTotal(this)">
+                                            </div>
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <div class="at-input-group">
+                                                <input type="text" placeholder="金额" style="width: 120px;" readonly>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <button type="button" class="at-button" style="background: #F56C6C; color: white; border: none; padding: 4px 8px; font-size: 11px;" onclick="removeOrderItem(this)">删除</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="padding: 8px; text-align: right; font-weight: 600;">合计：</td>
+                                        <td style="padding: 8px; font-weight: 600;">
+                                            <div class="at-input-group">
+                                                <input type="text" id="total-amount" readonly style="font-weight: 600;">
+                                            </div>
+                                        </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 备注信息 -->
+                    <div>
+                        <h4 style="margin-bottom: 16px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">备注信息</h4>
+                        <textarea id="form-remark" placeholder="请输入备注信息" style="width: 100%; height: 80px; padding: 8px; border: 1px solid #DCDFE6; border-radius: 4px; font-size: 12px; resize: vertical;"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="at-button" onclick="closeModal('order-modal-overlay')">取消</button>
+                <button type="button" class="at-button btn-main" onclick="saveOrder()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 订单详情模态框 -->
+    <div class="modal-overlay" id="detail-modal-overlay">
+        <div class="modal" style="width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">订单详情</h3>
+                <button class="modal-close" onclick="closeModal('detail-modal-overlay')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="order-detail-content">
+                    <!-- 详情内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="at-button" onclick="closeModal('detail-modal-overlay')">关闭</button>
+                <button type="button" class="at-button btn-main" onclick="editFromDetail()">编辑</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量导入模态框 -->
+    <div class="modal-overlay" id="import-modal-overlay">
+        <div class="modal" style="width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">采购订单信息导入</h3>
+                <button class="modal-close" onclick="closeModal('import-modal-overlay')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 模拟项目中的import-table组件结构 -->
+                <div style="margin-top: 0px !important;">
+                    <form class="form-vertical">
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">上传表格：</label>
+                            <input type="file" id="import-file" accept=".xlsx,.xls" onchange="handleFileUpload(event)"
+                                   style="border: 1px solid #DCDFE6; padding: 8px; border-radius: 4px; width: 100%;">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">导入模板：</label>
+                            <a href="javascript:void(0)" onclick="downloadTemplate()" style="color: #E94609; text-decoration: none;">
+                                点击下载采购订单导入模板.xlsx
+                            </a>
+                        </div>
+
+                        <div class="form-group" id="import-result-group" style="display: none; margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">导入结果：</label>
+                            <div id="import-result-content">
+                                <!-- 结果内容 -->
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="import-fail-group" style="display: none; margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">失败结果文件：</label>
+                            <a href="javascript:void(0)" id="import-fail-link" style="color: #E94609; text-decoration: none;">
+                                下载失败结果文件
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="at-button" onclick="closeModal('import-modal-overlay')">取消</button>
+                <button type="button" class="at-button btn-main" onclick="handleImport()" id="import-upload-btn" disabled>
+                    <span id="import-loading" class="loading-spinner" style="display: none;"></span>
+                    <span id="import-btn-text">上传</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript功能实现 -->
+    <script>
+        // 模拟采购订单数据
+        const ordersData = [
+            {
+                id: 1,
+                order_no: 'PO20241225001',
+                supplier: '科技创新有限公司',
+                department: '研发部',
+                applicant: '张三',
+                apply_date: '2024-12-25',
+                expected_date: '2025-01-15',
+                total_amount: 156000.00,
+                status: 'pending',
+                priority: 'high',
+                items: [
+                    { name: '服务器设备', quantity: 2, unit_price: 65000, amount: 130000 },
+                    { name: '网络设备', quantity: 5, unit_price: 5200, amount: 26000 }
+                ],
+                remark: '紧急采购，用于新项目开发'
+            },
+            {
+                id: 2,
+                order_no: 'PO20241225002',
+                supplier: '硬件制造集团',
+                department: '市场部',
+                applicant: '李四',
+                apply_date: '2024-12-24',
+                expected_date: '2025-01-10',
+                total_amount: 89500.00,
+                status: 'approved',
+                priority: 'medium',
+                items: [
+                    { name: '办公电脑', quantity: 10, unit_price: 8500, amount: 85000 },
+                    { name: '打印机', quantity: 1, unit_price: 4500, amount: 4500 }
+                ],
+                remark: '市场部办公设备更新'
+            },
+            {
+                id: 3,
+                order_no: 'PO20241225003',
+                supplier: '材料供应商',
+                department: '生产部',
+                applicant: '王五',
+                apply_date: '2024-12-23',
+                expected_date: '2025-01-08',
+                total_amount: 45800.00,
+                status: 'processing',
+                priority: 'high',
+                items: [
+                    { name: '原材料A', quantity: 100, unit_price: 280, amount: 28000 },
+                    { name: '原材料B', quantity: 50, unit_price: 356, amount: 17800 }
+                ],
+                remark: '生产急需原材料'
+            },
+            {
+                id: 4,
+                order_no: 'PO20241225004',
+                supplier: '服务提供商',
+                department: '人事部',
+                applicant: '赵六',
+                apply_date: '2024-12-22',
+                expected_date: '2025-01-05',
+                total_amount: 12000.00,
+                status: 'completed',
+                priority: 'low',
+                items: [
+                    { name: '咨询服务', quantity: 1, unit_price: 12000, amount: 12000 }
+                ],
+                remark: '人事管理咨询服务'
+            },
+            {
+                id: 5,
+                order_no: 'PO20241225005',
+                supplier: '科技创新有限公司',
+                department: '财务部',
+                applicant: '钱七',
+                apply_date: '2024-12-21',
+                expected_date: '2025-01-12',
+                total_amount: 234000.00,
+                status: 'draft',
+                priority: 'medium',
+                items: [
+                    { name: '财务软件', quantity: 1, unit_price: 180000, amount: 180000 },
+                    { name: '技术支持服务', quantity: 1, unit_price: 54000, amount: 54000 }
+                ],
+                remark: '财务系统升级'
+            }
+        ];
+
+        let currentPage = 1;
+        let pageSize = 20;
+        let selectedOrders = [];
+        let editingOrder = null;
+        let uploadedFile = null;
+        let importLoading = false;
+
+        // 基础功能函数
+        function searchList() {
+            console.log('搜索采购订单信息');
+            const formData = {
+                order_no: document.getElementById('order_no').value,
+                supplier_name: document.getElementById('supplier_name').value,
+                department: document.getElementById('department').value,
+                status: document.getElementById('status').value,
+                priority: document.getElementById('priority').value
+            };
+            console.log('搜索条件:', formData);
+            loadOrderList();
+        }
+
+        function clearSearch() {
+            document.getElementById('order_no').value = '';
+            document.getElementById('supplier_name').value = '';
+            document.getElementById('department').value = '';
+            document.getElementById('status').value = '';
+            document.getElementById('priority').value = '';
+            loadOrderList();
+        }
+
+        // 加载订单列表
+        function loadOrderList() {
+            console.log('加载采购订单列表');
+            const tbody = document.getElementById('order-tbody');
+            const totalCount = document.getElementById('total-count');
+
+            // 清空表格
+            tbody.innerHTML = '';
+
+            // 填充数据
+            ordersData.forEach((order, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <input type="checkbox" value="${order.id}" onchange="toggleSelect(${order.id})">
+                    </td>
+                    <td>${order.order_no}</td>
+                    <td>${order.supplier}</td>
+                    <td>${order.department}</td>
+                    <td>${order.applicant}</td>
+                    <td>${order.apply_date}</td>
+                    <td>${order.expected_date}</td>
+                    <td>¥${order.total_amount.toLocaleString('zh-CN', { minimumFractionDigits: 2 })}</td>
+                    <td class="status-cell">
+                        <span class="status-tag ${getStatusClass(order.status)}">${getStatusText(order.status)}</span>
+                    </td>
+                    <td>
+                        <span class="priority-${order.priority}">${getPriorityText(order.priority)}</span>
+                    </td>
+                    <td class="actions">
+                        <button class="at-button" onclick="viewOrder(${order.id})">查看</button>
+                        <button class="at-button" onclick="editOrder(${order.id})">编辑</button>
+                        <button class="at-button" onclick="deleteOrder(${order.id})" style="color: #F56C6C;">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // 更新总数
+            totalCount.textContent = ordersData.length;
+        }
+
+        function getStatusClass(status) {
+            const statusMap = {
+                'draft': 'status-draft',
+                'pending': 'status-pending',
+                'approved': 'status-approved',
+                'rejected': 'status-rejected',
+                'returned': 'status-returned',
+                'processing': 'status-processing',
+                'completed': 'status-completed',
+                'cancelled': 'status-cancelled'
+            };
+            return statusMap[status] || 'status-draft';
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'draft': '草稿',
+                'pending': '待审批',
+                'approved': '审批通过',
+                'rejected': '审批拒绝',
+                'returned': '退回修改',
+                'processing': '处理中',
+                'completed': '已完成',
+                'cancelled': '已取消'
+            };
+            return statusMap[status] || '草稿';
+        }
+
+        function getPriorityText(priority) {
+            const priorityMap = {
+                'high': '高',
+                'medium': '中',
+                'low': '低'
+            };
+            return priorityMap[priority] || '中';
+        }
+
+        // 全选/反选
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('#order-tbody input[type="checkbox"]');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+                toggleSelect(parseInt(checkbox.value));
+            });
+        }
+
+        // 单选
+        function toggleSelect(orderId) {
+            const index = selectedOrders.indexOf(orderId);
+            if (index > -1) {
+                selectedOrders.splice(index, 1);
+            } else {
+                selectedOrders.push(orderId);
+            }
+            console.log('已选择订单:', selectedOrders);
+        }
+
+        // 显示新增模态框
+        function showAddModal() {
+            editingOrder = null;
+            document.getElementById('modal-title').textContent = '新增采购订单';
+            clearForm();
+            document.getElementById('form-order-no').value = generateOrderNo();
+            showModal('order-modal-overlay');
+        }
+
+        // 生成订单编号
+        function generateOrderNo() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `PO${year}${month}${day}${random}`;
+        }
+
+        // 编辑订单
+        function editOrder(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (order) {
+                editingOrder = order;
+                document.getElementById('modal-title').textContent = '编辑采购订单';
+                fillForm(order);
+                showModal('order-modal-overlay');
+            }
+        }
+
+        // 查看订单详情
+        function viewOrder(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (order) {
+                showOrderDetail(order);
+                showModal('detail-modal-overlay');
+            }
+        }
+
+        // 显示订单详情
+        function showOrderDetail(order) {
+            const content = document.getElementById('order-detail-content');
+            content.innerHTML = `
+                <div style="margin-bottom: 24px;">
+                    <h4 style="margin-bottom: 16px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">基本信息</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div><strong>订单编号：</strong>${order.order_no}</div>
+                        <div><strong>供应商：</strong>${order.supplier}</div>
+                        <div><strong>申请部门：</strong>${order.department}</div>
+                        <div><strong>申请人：</strong>${order.applicant}</div>
+                        <div><strong>申请日期：</strong>${order.apply_date}</div>
+                        <div><strong>期望到货日期：</strong>${order.expected_date}</div>
+                        <div><strong>订单金额：</strong>¥${order.total_amount.toLocaleString('zh-CN', { minimumFractionDigits: 2 })}</div>
+                        <div><strong>状态：</strong><span class="status-tag ${getStatusClass(order.status)}">${getStatusText(order.status)}</span></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <h4 style="margin-bottom: 16px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">订单明细</h4>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #EBEEF5;">商品名称</th>
+                                <th style="padding: 8px; text-align: right; border-bottom: 1px solid #EBEEF5;">数量</th>
+                                <th style="padding: 8px; text-align: right; border-bottom: 1px solid #EBEEF5;">单价</th>
+                                <th style="padding: 8px; text-align: right; border-bottom: 1px solid #EBEEF5;">金额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${order.items.map(item => `
+                                <tr>
+                                    <td style="padding: 8px; text-align: left;">${item.name}</td>
+                                    <td style="padding: 8px; text-align: right;">${item.quantity}</td>
+                                    <td style="padding: 8px; text-align: right;">¥${item.unit_price.toFixed(2)}</td>
+                                    <td style="padding: 8px; text-align: right;">¥${item.amount.toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="padding: 8px; text-align: right; font-weight: 600;">合计：</td>
+                                <td style="padding: 8px; text-align: right; font-weight: 600;">¥${order.total_amount.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                ${order.remark ? `
+                <div>
+                    <h4 style="margin-bottom: 16px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">备注信息</h4>
+                    <div style="background: #F5F7FA; padding: 16px; border-radius: 4px;">${order.remark}</div>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        // 填充表单
+        function fillForm(order) {
+            document.getElementById('form-order-no').value = order.order_no || '';
+            document.getElementById('form-supplier').value = order.supplier || '';
+            document.getElementById('form-department').value = order.department || '';
+            document.getElementById('form-expected-date').value = order.expected_date || '';
+            document.getElementById('form-priority').value = order.priority || 'medium';
+            document.getElementById('form-budget-amount').value = order.budget_amount || '';
+            document.getElementById('form-remark').value = order.remark || '';
+
+            // 填充订单明细
+            const itemsHtml = order.items.map(item => `
+                <tr>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="text" value="${item.name}" style="width: 200px;">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="number" value="${item.quantity}" style="width: 100px;" onchange="calculateItemTotal(this)">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="number" value="${item.unit_price}" step="0.01" style="width: 120px;" onchange="calculateItemTotal(this)">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="text" value="${item.amount.toFixed(2)}" style="width: 120px;" readonly>
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <button type="button" class="at-button" style="background: #F56C6C; color: white; border: none; padding: 4px 8px; font-size: 11px;" onclick="removeOrderItem(this)">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.getElementById('order-items').innerHTML = itemsHtml;
+            calculateTotal();
+        }
+
+        // 清空表单
+        function clearForm() {
+            document.getElementById('order-form').reset();
+            // 重置订单明细为空行
+            document.getElementById('order-items').innerHTML = `
+                <tr>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="text" placeholder="商品名称" style="width: 200px;">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="number" placeholder="数量" style="width: 100px;" onchange="calculateItemTotal(this)">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="number" placeholder="单价" step="0.01" style="width: 120px;" onchange="calculateItemTotal(this)">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="text" placeholder="金额" style="width: 120px;" readonly>
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <button type="button" class="at-button" style="background: #F56C6C; color: white; border: none; padding: 4px 8px; font-size: 11px;" onclick="removeOrderItem(this)">删除</button>
+                    </td>
+                </tr>
+            `;
+            document.getElementById('total-amount').value = '';
+        }
+
+        // 添加订单明细行
+        function addOrderItem() {
+            const tbody = document.getElementById('order-items');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <tr>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="text" placeholder="商品名称" style="width: 200px;">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="number" placeholder="数量" style="width: 100px;" onchange="calculateItemTotal(this)">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="number" placeholder="单价" step="0.01" style="width: 120px;" onchange="calculateItemTotal(this)">
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <div class="at-input-group">
+                            <input type="text" placeholder="金额" style="width: 120px;" readonly>
+                        </div>
+                    </td>
+                    <td style="padding: 8px;">
+                        <button type="button" class="at-button" style="background: #F56C6C; color: white; border: none; padding: 4px 8px; font-size: 11px;" onclick="removeOrderItem(this)">删除</button>
+                    </td>
+                </tr>
+            `;
+            tbody.appendChild(newRow);
+        }
+
+        // 删除订单明细行
+        function removeOrderItem(button) {
+            const row = button.closest('tr');
+            row.remove();
+            calculateTotal();
+        }
+
+        // 计算单项金额
+        function calculateItemTotal(input) {
+            const row = input.closest('tr');
+            const quantity = parseFloat(row.querySelector('input[placeholder="数量"]').value) || 0;
+            const unitPrice = parseFloat(row.querySelector('input[placeholder="单价"]').value) || 0;
+            const amountInput = row.querySelector('input[placeholder="金额"]');
+
+            const amount = quantity * unitPrice;
+            amountInput.value = amount.toFixed(2);
+            calculateTotal();
+        }
+
+        // 计算总金额
+        function calculateTotal() {
+            const rows = document.querySelectorAll('#order-items tr');
+            let total = 0;
+
+            rows.forEach(row => {
+                const amountInput = row.querySelector('input[placeholder="金额"]');
+                if (amountInput && amountInput.value) {
+                    total += parseFloat(amountInput.value) || 0;
+                }
+            });
+
+            document.getElementById('total-amount').value = total.toFixed(2);
+        }
+
+        // 保存订单
+        function saveOrder() {
+            const form = document.getElementById('order-form');
+
+            const formData = {
+                order_no: document.getElementById('form-order-no').value,
+                supplier: document.getElementById('form-supplier').value,
+                department: document.getElementById('form-department').value,
+                expected_date: document.getElementById('form-expected-date').value,
+                priority: document.getElementById('form-priority').value,
+                budget_amount: parseFloat(document.getElementById('form-budget-amount').value) || 0,
+                remark: document.getElementById('form-remark').value,
+                status: 'draft',
+                items: getOrderItems()
+            };
+
+            // 验证必填字段
+            if (!formData.supplier || !formData.department || !formData.expected_date) {
+                showErrorMessage('请填写必填字段');
+                return;
+            }
+
+            if (formData.items.length === 0) {
+                showErrorMessage('请至少添加一个商品');
+                return;
+            }
+
+            formData.total_amount = formData.items.reduce((sum, item) => sum + item.amount, 0);
+
+            if (editingOrder) {
+                // 编辑模式
+                Object.assign(editingOrder, formData);
+                console.log('更新订单信息:', editingOrder);
+                showSuccessMessage('订单更新成功！');
+            } else {
+                // 新增模式
+                const newOrder = {
+                    id: Date.now(),
+                    apply_date: new Date().toISOString().split('T')[0],
+                    applicant: '当前用户',
+                    ...formData
+                };
+                ordersData.unshift(newOrder);
+                console.log('新增订单信息:', newOrder);
+                showSuccessMessage('订单创建成功！');
+            }
+
+            closeModal('order-modal-overlay');
+            loadOrderList();
+        }
+
+        // 获取订单明细
+        function getOrderItems() {
+            const items = [];
+            const rows = document.querySelectorAll('#order-items tr');
+
+            rows.forEach(row => {
+                const name = row.querySelector('input[placeholder="商品名称"]').value;
+                const quantity = parseFloat(row.querySelector('input[placeholder="数量"]').value) || 0;
+                const unitPrice = parseFloat(row.querySelector('input[placeholder="单价"]').value) || 0;
+
+                if (name && quantity > 0 && unitPrice > 0) {
+                    items.push({
+                        name,
+                        quantity,
+                        unit_price: unitPrice,
+                        amount: quantity * unitPrice
+                    });
+                }
+            });
+
+            return items;
+        }
+
+        // 删除订单
+        async function deleteOrder(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (!order) return;
+
+            try {
+                const confirm = await showConfirmModal({
+                    title: '删除确认',
+                    content: `确定要删除订单 "${order.order_no}" 吗？删除后不可恢复。`
+                });
+
+                if (confirm) {
+                    const index = ordersData.findIndex(o => o.id === orderId);
+                    ordersData.splice(index, 1);
+                    loadOrderList();
+                    showSuccessMessage('删除成功！');
+                }
+            } catch (error) {
+                // 用户取消删除
+                console.log('用户取消删除操作');
+            }
+        }
+
+        // 批量删除
+        async function batchDelete() {
+            if (selectedOrders.length === 0) {
+                showWarningMessage('请先选择要删除的订单');
+                return;
+            }
+
+            try {
+                const confirm = await showConfirmModal({
+                    title: '批量删除确认',
+                    content: `确定要删除选中的 ${selectedOrders.length} 个订单吗？删除后不可恢复。`
+                });
+
+                if (confirm) {
+                    selectedOrders.forEach(orderId => {
+                        const index = ordersData.findIndex(o => o.id === orderId);
+                        if (index > -1) {
+                            ordersData.splice(index, 1);
+                        }
+                    });
+                    selectedOrders = [];
+                    document.getElementById('selectAll').checked = false;
+                    loadOrderList();
+                    showSuccessMessage('批量删除成功！');
+                }
+            } catch (error) {
+                // 用户取消批量删除
+                console.log('用户取消批量删除操作');
+            }
+        }
+
+        // 批量审批
+        function batchApprove() {
+            if (selectedOrders.length === 0) {
+                showWarningMessage('请先选择要审批的订单');
+                return;
+            }
+
+            const pendingOrders = selectedOrders.map(orderId => {
+                const order = ordersData.find(o => o.id === orderId);
+                return order && order.status === 'pending' ? order : null;
+            }).filter(Boolean);
+
+            if (pendingOrders.length === 0) {
+                showWarningMessage('没有待审批的订单');
+                return;
+            }
+
+            showBatchApproveModal(pendingOrders);
+        }
+
+        // 显示批量审批模态框
+        function showBatchApproveModal(pendingOrders) {
+            const modalHtml = `
+                <div class="modal-overlay" id="batch-approve-modal-overlay" style="display: block;">
+                    <div class="modal" style="width: 600px;">
+                        <div class="modal-header">
+                            <h3 class="modal-title">批量审批订单</h3>
+                            <button class="modal-close" onclick="closeModal('batch-approve-modal-overlay')">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="margin-bottom: 12px; color: #303133; border-bottom: 2px solid #E94609; padding-bottom: 8px;">审批信息</h4>
+                                <div style="background: #FEF7F0; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                                    <span style="color: #E94609; font-weight: 500;">待审批订单数量：</span>
+                                    <span style="color: #303133;">${pendingOrders.length} 个</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="margin-bottom: 12px; color: #303133;">审批结果 <span style="color: #F56C6C;">*</span></h4>
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 8px; border: 2px solid #DCDFE6; border-radius: 6px; transition: all 0.3s ease;">
+                                        <input type="radio" name="approve-result" value="approved" checked style="margin-right: 12px;">
+                                        <div>
+                                            <div style="font-weight: 500; color: #67C23A; margin-bottom: 4px;">✓ 审批通过</div>
+                                            <div style="font-size: 12px; color: #909399;">订单审批通过，可以进入下一步流程</div>
+                                        </div>
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 8px; border: 2px solid #DCDFE6; border-radius: 6px; transition: all 0.3s ease;">
+                                        <input type="radio" name="approve-result" value="rejected" style="margin-right: 12px;">
+                                        <div>
+                                            <div style="font-weight: 500; color: #F56C6C; margin-bottom: 4px;">✗ 审批拒绝</div>
+                                            <div style="font-size: 12px; color: #909399;">订单审批拒绝，需要修改后重新提交</div>
+                                        </div>
+                                    </label>
+                                    <label style="display: flex; align-items: center; cursor: pointer; padding: 8px; border: 2px solid #DCDFE6; border-radius: 6px; transition: all 0.3s ease;">
+                                        <input type="radio" name="approve-result" value="returned" style="margin-right: 12px;">
+                                        <div>
+                                            <div style="font-weight: 500; color: #E6A23C; margin-bottom: 4px;">← 退回修改</div>
+                                            <div style="font-size: 12px; color: #909399;">订单退回给申请人修改补充</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="margin-bottom: 12px; color: #303133;">审批备注 <span style="color: #909399; font-weight: normal;">（选填）</span></h4>
+                                <textarea id="approve-remark"
+                                    placeholder="请输入审批意见或备注信息..."
+                                    style="width: 100%; height: 100px; padding: 12px; border: 1px solid #DCDFE6; border-radius: 6px; font-size: 12px; line-height: 1.5; resize: vertical; font-family: inherit;"
+                                    maxlength="500"></textarea>
+                                <div style="text-align: right; margin-top: 4px; color: #909399; font-size: 11px;">
+                                    <span id="remark-count">0</span>/500
+                                </div>
+                            </div>
+
+                            <div style="background: #F9FAFC; padding: 12px; border-radius: 6px; border-left: 4px solid #409EFF;">
+                                <div style="font-size: 12px; color: #606266;">
+                                    <strong>提示：</strong>审批后将不可撤销，请谨慎操作。如需修改审批结果，请联系系统管理员。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="at-button" onclick="closeModal('batch-approve-modal-overlay')">取消</button>
+                            <button type="button" class="at-button btn-main" onclick="confirmBatchApprove(${pendingOrders.length})">
+                                <span id="approve-loading" class="loading-spinner" style="display: none;"></span>
+                                <span id="approve-btn-text">确认审批</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            // 添加事件监听器
+            setTimeout(() => {
+                // 审批结果选项样式切换
+                const radioInputs = document.querySelectorAll('input[name="approve-result"]');
+                radioInputs.forEach(input => {
+                    input.addEventListener('change', function() {
+                        document.querySelectorAll('input[name="approve-result"]').forEach(radio => {
+                            const label = radio.closest('label');
+                            if (radio.checked) {
+                                label.style.borderColor = '#E94609';
+                                label.style.backgroundColor = '#FEF7F0';
+                            } else {
+                                label.style.borderColor = '#DCDFE6';
+                                label.style.backgroundColor = 'transparent';
+                            }
+                        });
+                    });
+                    // 初始化第一个选项的样式
+                    if (input.checked) {
+                        const label = input.closest('label');
+                        label.style.borderColor = '#E94609';
+                        label.style.backgroundColor = '#FEF7F0';
+                    }
+                });
+
+                // 备注字数统计
+                const remarkTextarea = document.getElementById('approve-remark');
+                const remarkCount = document.getElementById('remark-count');
+                remarkTextarea.addEventListener('input', function() {
+                    remarkCount.textContent = this.value.length;
+                });
+            }, 100);
+        }
+
+        // 确认批量审批
+        async function confirmBatchApprove(orderCount) {
+            const approveResult = document.querySelector('input[name="approve-result"]:checked').value;
+            const approveRemark = document.getElementById('approve-remark').value.trim();
+
+            if (!approveResult) {
+                showWarningMessage('请选择审批结果');
+                return;
+            }
+
+            // 显示加载状态
+            document.getElementById('approve-loading').style.display = 'inline-block';
+            document.getElementById('approve-btn-text').textContent = '审批中...';
+
+            try {
+                // 模拟审批处理
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // 获取待审批订单
+                const pendingOrders = selectedOrders.map(orderId => {
+                    const order = ordersData.find(o => o.id === orderId);
+                    return order && order.status === 'pending' ? order : null;
+                }).filter(Boolean);
+
+                // 更新订单状态
+                pendingOrders.forEach(order => {
+                    order.status = approveResult;
+                    order.approve_remark = approveRemark;
+                    order.approve_time = new Date().toISOString();
+                    order.approver = '当前用户'; // 实际项目中应该是真实用户名
+                });
+
+                // 清理选择状态
+                selectedOrders = [];
+                document.getElementById('selectAll').checked = false;
+                loadOrderList();
+
+                // 显示成功消息
+                let resultText = '';
+                switch (approveResult) {
+                    case 'approved':
+                        resultText = '审批通过';
+                        break;
+                    case 'rejected':
+                        resultText = '审批拒绝';
+                        break;
+                    case 'returned':
+                        resultText = '退回修改';
+                        break;
+                }
+
+                showSuccessMessage(`批量审批完成！${orderCount} 个订单${resultText}`);
+                closeModal('batch-approve-modal-overlay');
+
+            } catch (error) {
+                showErrorMessage('审批失败：' + error.message);
+            } finally {
+                // 重置按钮状态
+                document.getElementById('approve-loading').style.display = 'none';
+                document.getElementById('approve-btn-text').textContent = '确认审批';
+            }
+        }
+
+        // 导出功能
+        function exportOrders() {
+            showExportModal();
+        }
+
+        // 显示导出选项模态框
+        function showExportModal() {
+            const modalHtml = `
+                <div class="modal-overlay" id="export-modal-overlay" style="display: block;">
+                    <div class="modal" style="width: 500px;">
+                        <div class="modal-header">
+                            <h3 class="modal-title">导出采购订单</h3>
+                            <button class="modal-close" onclick="closeModal('export-modal-overlay')">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="margin-bottom: 12px; color: #303133;">导出范围</h4>
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px; cursor: pointer;">
+                                        <input type="radio" name="export-range" value="all" checked style="margin-right: 8px;">
+                                        <span>导出全部订单 (${ordersData.length} 条)</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px; cursor: pointer;">
+                                        <input type="radio" name="export-range" value="selected" style="margin-right: 8px;" ${selectedOrders.length === 0 ? 'disabled' : ''}>
+                                        <span>导出选中的订单 (${selectedOrders.length} 条)</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px; cursor: pointer;">
+                                        <input type="radio" name="export-range" value="filtered" style="margin-right: 8px;">
+                                        <span>导出当前筛选结果</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="margin-bottom: 12px; color: #303133;">导出格式</h4>
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px; cursor: pointer;">
+                                        <input type="radio" name="export-format" value="xlsx" checked style="margin-right: 8px;">
+                                        <span>Excel 格式 (.xlsx)</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px; cursor: pointer;">
+                                        <input type="radio" name="export-format" value="csv" style="margin-right: 8px;">
+                                        <span>CSV 格式 (.csv)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="at-button" onclick="closeModal('export-modal-overlay')">取消</button>
+                            <button type="button" class="at-button btn-main" onclick="confirmExport()">
+                                <span id="export-loading" class="loading-spinner" style="display: none;"></span>
+                                <span id="export-btn-text">开始导出</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        // 确认导出
+        async function confirmExport() {
+            const exportRange = document.querySelector('input[name="export-range"]:checked').value;
+            const exportFormat = document.querySelector('input[name="export-format"]:checked').value;
+
+            // 显示加载状态
+            document.getElementById('export-loading').style.display = 'inline-block';
+            document.getElementById('export-btn-text').textContent = '导出中...';
+
+            try {
+                // 模拟导出处理
+                await performExport(exportRange, exportFormat);
+
+                // 导出成功
+                closeModal('export-modal-overlay');
+                showSuccessMessage('导出成功！文件已开始下载');
+
+            } catch (error) {
+                showErrorMessage('导出失败：' + error.message);
+            } finally {
+                // 重置按钮状态
+                document.getElementById('export-loading').style.display = 'none';
+                document.getElementById('export-btn-text').textContent = '开始导出';
+            }
+        }
+
+        // 执行导出
+        async function performExport(range, format) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    try {
+                        // 获取要导出的数据
+                        let dataToExport = [];
+
+                        switch (range) {
+                            case 'all':
+                                dataToExport = ordersData;
+                                break;
+                            case 'selected':
+                                dataToExport = ordersData.filter(order => selectedOrders.includes(order.id));
+                                break;
+                            case 'filtered':
+                                // 这里应该是当前筛选后的数据，简化处理使用全部数据
+                                dataToExport = ordersData;
+                                break;
+                        }
+
+                        // 生成CSV内容
+                        const csvContent = generateCSV(dataToExport);
+                        let fileName = `采购订单_${new Date().toISOString().slice(0, 10)}.csv`;
+                        let mimeType = 'text/csv;charset=utf-8;';
+
+                        // 下载文件
+                        downloadFile(csvContent, fileName, mimeType);
+
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 2000); // 模拟2秒的处理时间
+            });
+        }
+
+        // 生成CSV内容
+        function generateCSV(data) {
+            if (data.length === 0) return '';
+
+            // 表头
+            const headers = ['订单编号', '供应商', '申请部门', '申请人', '申请日期', '期望到货日期', '订单金额', '状态', '优先级'];
+            let csv = headers.join(',') + '\n';
+
+            // 数据行
+            data.forEach(order => {
+                const values = [
+                    order.order_no,
+                    order.supplier,
+                    order.department,
+                    order.applicant,
+                    order.apply_date,
+                    order.expected_date,
+                    order.total_amount.toFixed(2),
+                    getStatusText(order.status),
+                    getPriorityText(order.priority)
+                ];
+
+                // 处理包含逗号的值
+                const escapedValues = values.map(value => {
+                    let stringValue = String(value || '');
+                    if (stringValue.includes(',')) {
+                        stringValue = `"${stringValue}"`;
+                    }
+                    return stringValue;
+                });
+
+                csv += escapedValues.join(',') + '\n';
+            });
+
+            return csv;
+        }
+
+        // 下载文件
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            link.style.display = 'none';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // 释放URL对象
+            window.URL.revokeObjectURL(url);
+        }
+
+        // 导入相关功能
+        function showImportModal() {
+            resetImportModal();
+            showModal('import-modal-overlay');
+        }
+
+        function resetImportModal() {
+            uploadedFile = null;
+            importLoading = false;
+            document.getElementById('import-file').value = '';
+            document.getElementById('import-upload-btn').disabled = true;
+            document.getElementById('import-loading').style.display = 'none';
+            document.getElementById('import-btn-text').textContent = '上传';
+            document.getElementById('import-result-group').style.display = 'none';
+            document.getElementById('import-fail-group').style.display = 'none';
+        }
+
+        function downloadTemplate() {
+            console.log('下载采购订单导入模板');
+            const link = document.createElement('a');
+            link.href = 'javascript:void(0)';
+            link.download = '采购订单导入模板.xlsx';
+            link.click();
+            showSuccessMessage('模板下载已开始，请查看浏览器下载目录');
+        }
+
+        function handleFileUpload(event) {
+            uploadedFile = event.target.files[0];
+
+            if (uploadedFile) {
+                console.log('选择的文件:', uploadedFile.name);
+
+                // 验证文件类型
+                const allowedTypes = [
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'application/vnd.ms-excel'
+                ];
+
+                if (!allowedTypes.includes(uploadedFile.type)) {
+                    showErrorMessage('文件格式不正确，请选择 .xlsx 或 .xls 格式的文件');
+                    resetFileInput();
+                    return;
+                }
+
+                // 验证文件大小（10MB限制）
+                if (uploadedFile.size > 10 * 1024 * 1024) {
+                    showErrorMessage('文件大小不能超过 10MB');
+                    resetFileInput();
+                    return;
+                }
+
+                // 启用上传按钮
+                document.getElementById('import-upload-btn').disabled = false;
+                console.log('文件验证通过，可以上传');
+            } else {
+                document.getElementById('import-upload-btn').disabled = true;
+            }
+        }
+
+        function resetFileInput() {
+            document.getElementById('import-file').value = '';
+            uploadedFile = null;
+            document.getElementById('import-upload-btn').disabled = true;
+        }
+
+        function handleImport() {
+            if (!uploadedFile) {
+                showWarningMessage('上传文件不能为空');
+                return;
+            }
+
+            if (importLoading) return;
+
+            importLoading = true;
+
+            // 显示加载状态
+            document.getElementById('import-loading').style.display = 'inline-block';
+            document.getElementById('import-btn-text').textContent = '上传中...';
+            document.getElementById('import-upload-btn').disabled = true;
+
+            console.log('开始上传文件:', uploadedFile.name);
+
+            // 模拟文件上传到服务器
+            setTimeout(() => {
+                console.log('文件上传成功，开始导入处理');
+                submitImport();
+            }, 1500);
+        }
+
+        function submitImport() {
+            console.log('开始处理导入数据');
+
+            // 模拟导入处理
+            setTimeout(() => {
+                // 模拟导入结果（随机成功或部分失败）
+                const isPartialFail = Math.random() > 0.7; // 30%概率部分失败
+
+                if (isPartialFail) {
+                    // 模拟部分导入失败的情况
+                    showImportResult('部分导入失败', true, '导入了 15 条订单信息，3 条失败');
+                } else {
+                    // 模拟完全成功的情况
+                    showImportResult('导入成功', false, '成功导入 18 条订单信息');
+                }
+
+                importLoading = false;
+                document.getElementById('import-loading').style.display = 'none';
+                document.getElementById('import-btn-text').textContent = '上传';
+
+            }, 2000);
+        }
+
+        function showImportResult(resultText, hasFail, detailText) {
+            // 显示导入结果
+            document.getElementById('import-result-group').style.display = 'block';
+            const resultContent = document.getElementById('import-result-content');
+
+            if (hasFail) {
+                resultContent.innerHTML = `<span style="color: #F56C6C;">${resultText}</span>`;
+
+                // 显示失败文件下载链接
+                document.getElementById('import-fail-group').style.display = 'block';
+                document.getElementById('import-fail-link').onclick = () => {
+                    console.log('下载失败结果文件');
+                    showInfoMessage('失败结果文件下载中...');
+                };
+            } else {
+                resultContent.innerHTML = `<span style="color: #67C23A;">${resultText}</span>`;
+                showSuccessMessage(detailText);
+
+                // 导入成功后刷新列表并关闭弹窗
+                setTimeout(() => {
+                    closeModal('import-modal-overlay');
+                    loadOrderList();
+                }, 1000);
+            }
+
+            console.log('导入完成:', detailText);
+        }
+
+        // 从详情页编辑
+        function editFromDetail() {
+            closeModal('detail-modal-overlay');
+            // 这里可以获取当前查看的订单ID并进行编辑
+        }
+
+        // ========== AT-UI风格的确认弹窗和消息提示系统 ==========
+
+        // 显示确认弹窗
+        function showConfirmModal(options) {
+            return new Promise((resolve, reject) => {
+                const modalHtml = `
+                    <div class="modal-overlay" id="confirm-modal-overlay" style="display: block;">
+                        <div class="modal" style="width: 400px;">
+                            <div class="modal-header">
+                                <h3 class="modal-title">${options.title || '确认'}</h3>
+                                <button class="modal-close" onclick="closeConfirmModal(false)">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="padding: 20px 0; line-height: 1.6; color: #606266;">
+                                    ${options.content || '确认执行此操作吗？'}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="at-button" onclick="closeConfirmModal(false)">取消</button>
+                                <button type="button" class="at-button btn-main" onclick="closeConfirmModal(true)">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                window.confirmResolve = resolve;
+                window.confirmReject = reject;
+            });
+        }
+
+        function closeConfirmModal(result) {
+            const modal = document.getElementById('confirm-modal-overlay');
+            if (modal) {
+                modal.remove();
+            }
+
+            if (result && window.confirmResolve) {
+                window.confirmResolve(true);
+            } else if (window.confirmReject) {
+                window.confirmReject(false);
+            }
+
+            window.confirmResolve = null;
+            window.confirmReject = null;
+        }
+
+        // 消息提示函数
+        function showSuccessMessage(message) {
+            showMessage(message, 'success');
+        }
+
+        function showWarningMessage(message) {
+            showMessage(message, 'warning');
+        }
+
+        function showErrorMessage(message) {
+            showMessage(message, 'error');
+        }
+
+        function showInfoMessage(message) {
+            showMessage(message, 'info');
+        }
+
+        // 消息提示核心函数
+        function showMessage(message, type = 'info') {
+            const messageId = 'message-' + Date.now();
+            const icons = {
+                success: '✓',
+                warning: '⚠',
+                error: '✕',
+                info: 'ℹ'
+            };
+
+            const colors = {
+                success: { bg: '#F0F9FF', border: '#67C23A', text: '#67C23A' },
+                warning: { bg: '#FFFBF0', border: '#E6A23C', text: '#E6A23C' },
+                error: { bg: '#FFF0F0', border: '#F56C6C', text: '#F56C6C' },
+                info: { bg: '#F4F4F5', border: '#909399', text: '#909399' }
+            };
+
+            const color = colors[type];
+
+            const messageHtml = `
+                <div id="${messageId}" style="
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: ${color.bg};
+                    border: 1px solid ${color.border};
+                    color: ${color.text};
+                    padding: 12px 20px;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+                    z-index: 2000;
+                    display: flex;
+                    align-items: center;
+                    font-size: 12px;
+                    animation: messageSlideIn 0.3s ease-out;
+                ">
+                    <span style="margin-right: 8px; font-size: 14px;">${icons[type]}</span>
+                    ${message}
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', messageHtml);
+
+            // 3秒后自动移除
+            setTimeout(() => {
+                const msgElement = document.getElementById(messageId);
+                if (msgElement) {
+                    msgElement.style.animation = 'messageSlideOut 0.3s ease-in';
+                    setTimeout(() => {
+                        msgElement.remove();
+                    }, 300);
+                }
+            }, 3000);
+        }
+
+        // 分页功能
+        function changePage(page) {
+            if (page === -1) {
+                currentPage = Math.ceil(ordersData.length / pageSize);
+            } else {
+                currentPage = page;
+            }
+            console.log('切换到第', currentPage, '页');
+            loadOrderList();
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                changePage(currentPage - 1);
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(ordersData.length / pageSize);
+            if (currentPage < totalPages) {
+                changePage(currentPage + 1);
+            }
+        }
+
+        // 模态框控制
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // 点击遮罩关闭模态框
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal(e.target.id);
+            }
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面加载完成，初始化数据');
+            loadOrderList();
+        });
+    </script>
+</body>
+</html>
